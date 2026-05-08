@@ -2,12 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { useUsers } from "@/components/UserContext";
+import { useDispatch } from "react-redux";
+import { addUser } from "@/store/usersSlice";
 import { Button } from "@/components/ui/button";
 
 export default function AddUserPage() {
   const router = useRouter();
-  const { addUser } = useUsers();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -16,7 +17,8 @@ export default function AddUserPage() {
   } = useForm();
 
   function onSubmit(data) {
-    addUser(data);
+    dispatch(addUser(data));
+
     router.push("/users");
   }
 
@@ -31,8 +33,11 @@ export default function AddUserPage() {
             placeholder="Enter name"
             className="w-full border p-3 rounded"
           />
+
           {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+            <p className="text-red-500 text-sm">
+              {errors.name.message}
+            </p>
           )}
         </div>
 
@@ -40,16 +45,15 @@ export default function AddUserPage() {
           <input
             {...register("email", {
               required: "Email is required",
-              pattern: {
-                value: /^\S+@\S+\.\S+$/,
-                message: "Enter a valid email",
-              },
             })}
             placeholder="Enter email"
             className="w-full border p-3 rounded"
           />
+
           {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+            <p className="text-red-500 text-sm">
+              {errors.email.message}
+            </p>
           )}
         </div>
 
@@ -59,8 +63,11 @@ export default function AddUserPage() {
             placeholder="Enter role"
             className="w-full border p-3 rounded"
           />
+
           {errors.role && (
-            <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>
+            <p className="text-red-500 text-sm">
+              {errors.role.message}
+            </p>
           )}
         </div>
 

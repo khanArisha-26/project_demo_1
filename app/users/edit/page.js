@@ -2,15 +2,20 @@
 
 import { useRouter, useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { useUsers } from "@/components/UserContext";
+import { useSelector, useDispatch } from "react-redux";
+import { updateUser } from "@/store/usersSlice";
 import { Button } from "@/components/ui/button";
 
 export default function EditUserPage() {
   const router = useRouter();
   const params = useParams();
-  const { users, updateUser } = useUsers();
+
+  const dispatch = useDispatch();
+
+  const users = useSelector((state) => state.users.users);
 
   const userId = Number(params.id);
+
   const user = users.find((singleUser) => singleUser.id === userId);
 
   const {
@@ -26,7 +31,13 @@ export default function EditUserPage() {
   });
 
   function onSubmit(data) {
-    updateUser(userId, data);
+    dispatch(
+      updateUser({
+        id: userId,
+        updatedUser: data,
+      })
+    );
+
     router.push("/users");
   }
 
@@ -41,8 +52,11 @@ export default function EditUserPage() {
             placeholder="Enter name"
             className="w-full border p-3 rounded"
           />
+
           {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+            <p className="text-red-500 text-sm">
+              {errors.name.message}
+            </p>
           )}
         </div>
 
@@ -50,16 +64,15 @@ export default function EditUserPage() {
           <input
             {...register("email", {
               required: "Email is required",
-              pattern: {
-                value: /^\S+@\S+\.\S+$/,
-                message: "Enter a valid email",
-              },
             })}
             placeholder="Enter email"
             className="w-full border p-3 rounded"
           />
+
           {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+            <p className="text-red-500 text-sm">
+              {errors.email.message}
+            </p>
           )}
         </div>
 
@@ -69,8 +82,11 @@ export default function EditUserPage() {
             placeholder="Enter role"
             className="w-full border p-3 rounded"
           />
+
           {errors.role && (
-            <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>
+            <p className="text-red-500 text-sm">
+              {errors.role.message}
+            </p>
           )}
         </div>
 

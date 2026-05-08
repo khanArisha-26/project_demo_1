@@ -1,6 +1,6 @@
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import { UserProvider } from "@/components/UserContext";
+import ReduxProvider from "@/components/ReduxProvider";
 
 export const metadata = {
   title: "Next Listing Demo",
@@ -11,12 +11,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <UserProvider>
+        <ReduxProvider>
           <Navbar />
+
           <main className="p-8 bg-gray-100 min-h-screen">
             {children}
           </main>
-        </UserProvider>
+        </ReduxProvider>
       </body>
     </html>
   );
